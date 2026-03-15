@@ -136,10 +136,10 @@
     </div>
 
     <div class="stats">
-        <div class="stat-card"><div class="label">Experiments</div><div class="value" id="total-exp">0</div></div>
-        <div class="stat-card"><div class="label">Kept</div><div class="value green" id="kept-exp">0</div></div>
-        <div class="stat-card"><div class="label">Best Val Loss</div><div class="value" id="best-loss">—</div></div>
-        <div class="stat-card"><div class="label">Improvement</div><div class="value yellow" id="improvement">0%</div></div>
+        <div class="stat-card"><div class="label">Experiments</div><div class="value" id="total-exp">4</div></div>
+        <div class="stat-card"><div class="label">Kept</div><div class="value green" id="kept-exp">4</div></div>
+        <div class="stat-card"><div class="label">Best Val Loss</div><div class="value" id="best-loss">3.9864</div></div>
+        <div class="stat-card"><div class="label">Improvement</div><div class="value yellow" id="improvement">4.8%</div></div>
     </div>
 
     <div class="plot-container">
@@ -158,6 +158,39 @@
             <select id="exp-compare" style="display:none"><option value="">—</option></select>
         </div>
         <div id="samples-container"></div>
+    </div>
+
+    <!-- ── Architecture ── -->
+    <div style="margin-bottom:2rem;">
+        <h2>Architecture</h2>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1rem; margin-top:1rem;">
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Vision Encoder (Tiny ViT)</div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    Image: 224×224 → 32×32 patches → <strong style="color:var(--text)">49 visual tokens</strong><br>
+                    3 transformer layers, dim=192, 3 heads<br>
+                    Patch embedding via Conv2d + learned position embeddings
+                </div>
+            </div>
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Language Decoder (Small GPT)</div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    4 causal transformer layers, dim=256, 4 heads<br>
+                    Vocab: ~5014 tokens (14 special + 1000 location + 4000 words)<br>
+                    Autoregressive generation with causal masking
+                </div>
+            </div>
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Multi-Task Output Format (Florence-2 style)</div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    <code style="color:var(--green)">&lt;caption&gt;</code> a dog on grass<br>
+                    <code style="color:var(--green)">&lt;vqa&gt;</code> how many? <code style="color:var(--yellow)">&lt;sep&gt;</code> 2<br>
+                    <code style="color:var(--green)">&lt;od&gt;</code> dog <code style="color:var(--accent)">&lt;box&gt;</code>loc loc loc loc<code style="color:var(--accent)">&lt;/box&gt;</code><br>
+                    <code style="color:var(--green)">&lt;seg&gt;</code> dog <code style="color:var(--accent)">&lt;poly&gt;</code>vertices...<code style="color:var(--accent)">&lt;/poly&gt;</code><br>
+                    Coordinates: 1000 bins (0.1% resolution). Loss: pure cross-entropy.
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- ── Results Table ── -->
