@@ -1,0 +1,10 @@
+data/
+checkpoint/
+*.pyc
+__pycache__/
+run.log
+.DS_Store
+*.egg-info/
+dist/
+build/
+.venv/

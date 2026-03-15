@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-VLM — Autonomous Multi-Task VLM Research</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --border: #30363d;
+            --text: #c9d1d9;
+            --text-dim: #8b949e;
+            --accent: #58a6ff;
+            --green: #2ea043;
+            --red: #f85149;
+            --yellow: #d29922;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+        .subtitle {
+            color: var(--text-dim);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem;
+            text-align: center;
+        }
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.3rem;
+        }
+        .stat-card .value.green { color: var(--green); }
+        .stat-card .value.yellow { color: var(--yellow); }
+        .tasks {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .task-badge {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        .plot-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .plot-container img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+        .table-container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        th {
+            background: var(--bg);
+            padding: 0.8rem;
+            text-align: left;
+            color: var(--text-dim);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+        }
+        td {
+            padding: 0.6rem 0.8rem;
+            border-bottom: 1px solid var(--border);
+        }
+        tr:hover { background: rgba(88, 166, 255, 0.05); }
+        tr.best { background: rgba(46, 160, 67, 0.1); }
+        .status-keep { color: var(--green); font-weight: 600; }
+        .status-discard { color: var(--red); }
+        .status-crash { color: var(--yellow); }
+        .scrollable { max-height: 500px; overflow-y: auto; }
+        footer {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auto-VLM</h1>
+        <p class="subtitle">
+            Autonomous research: training a tiny (&lt;10M param) multi-task Vision-Language Model from scratch in MLX
+        </p>
+
+        <div class="tasks">
+            <span class="task-badge">📝 Captioning</span>
+            <span class="task-badge">❓ VQA</span>
+            <span class="task-badge">📦 Object Detection</span>
+            <span class="task-badge">🎭 Segmentation</span>
+            <span class="task-badge">💬 Free Text</span>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Experiments</div>
+                <div class="value" id="total-exp">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Kept</div>
+                <div class="value green" id="kept-exp">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Best Val Loss</div>
+                <div class="value" id="best-loss">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Improvement</div>
+                <div class="value yellow" id="improvement">0%</div>
+            </div>
+        </div>
+
+        <div class="plot-container">
+            <img src="experiments_plot.png" alt="Experiment Progress" onerror="this.style.display='none'">
+        </div>
+
+        <div class="table-container">
+            <div class="scrollable" id="results-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Run</th>
+                            <th>Val Loss</th>
+                            <th>Params (M)</th>
+                            <th>Status</th>
+                            <th>Time (s)</th>
+                            <th>Improvement</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody id="results-body">
+                        <tr><td colspan="7" style="text-align:center;color:var(--text-dim)">
+                            No experiments yet. Run <code>python run_experiments.py</code> to start.
+                        </td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                Auto-VLM — Trained on Apple M3 with MLX
+                · <a href="https://github.com/nipunbatra/auto-vlm">GitHub</a>
+                · Powered by autonomous AI research
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // Load and render results.tsv
+        fetch('results.tsv')
+            .then(r => r.text())
+            .then(tsv => {
+                const lines = tsv.trim().split('\n');
+                if (lines.length < 2) return;
+
+                const headers = lines[0].split('\t');
+                const rows = lines.slice(1).map(l => {
+                    const vals = l.split('\t');
+                    return Object.fromEntries(headers.map((h, i) => [h, vals[i]]));
+                });
+
+                // Update stats
+                const kept = rows.filter(r => r.status === 'keep');
+                document.getElementById('total-exp').textContent = rows.length;
+                document.getElementById('kept-exp').textContent = kept.length;
+
+                let bestLoss = Infinity, bestImprov = 0;
+                kept.forEach(r => {
+                    const vl = parseFloat(r.val_loss);
+                    if (!isNaN(vl) && vl < bestLoss) bestLoss = vl;
+                    const imp = parseFloat(r['improv_%']);
+                    if (!isNaN(imp) && imp > bestImprov) bestImprov = imp;
+                });
+                if (bestLoss < Infinity) {
+                    document.getElementById('best-loss').textContent = bestLoss.toFixed(4);
+                }
+                document.getElementById('improvement').textContent = bestImprov.toFixed(1) + '%';
+
+                // Render table (newest first)
+                const tbody = document.getElementById('results-body');
+                tbody.innerHTML = rows.reverse().map(r => {
+                    const statusClass = `status-${r.status}`;
+                    const isBest = parseFloat(r.val_loss) === bestLoss && r.status === 'keep';
+                    return `<tr class="${isBest ? 'best' : ''}">
+                        <td>${r.run}</td>
+                        <td>${r.val_loss}</td>
+                        <td>${r.params_M}</td>
+                        <td class="${statusClass}">${r.status}</td>
+                        <td>${r.time_s}</td>
+                        <td>${r['improv_%']}</td>
+                        <td>${r.description}</td>
+                    </tr>`;
+                }).join('');
+            })
+            .catch(() => {});
+    </script>
+</body>
+</html>
