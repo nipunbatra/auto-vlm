@@ -1,0 +1,117 @@
+{
+  "caption": [
+    {
+      "image_id": 517069,
+      "task": "caption",
+      "input": "<caption>",
+      "ground_truth": "two women waiting at a bench next to a street . <eos>",
+      "prediction": "a man in a suit and a black jacket and black jacket and black jacket and black jacket ."
+    },
+    {
+      "image_id": 182417,
+      "task": "caption",
+      "input": "<caption>",
+      "ground_truth": "a beautiful dessert waiting to be s <unk> a <unk> <unk> d by two people <eos>",
+      "prediction": "a man in a suit and a black jacket and black jacket and black jacket and black jacket ."
+    },
+    {
+      "image_id": 517069,
+      "task": "caption",
+      "input": "<caption>",
+      "ground_truth": "a woman sitting on a bench and a woman standing waiting for the bus . <eos>",
+      "prediction": "a man in a suit and a black jacket and black jacket and black jacket and black jacket ."
+    }
+  ],
+  "od": [
+    {
+      "image_id": 494869,
+      "task": "od",
+      "input": "<od>",
+      "ground_truth": "dog [BOX: [000] [657] [361] [982] ] | person [BOX: [423] [137] [845] [680] ] | spoon [BOX: [772] [355] [822] [379] ] | bowl [BOX: [727] [369] [812] [408] ] | bowl [BOX: [800] [369] [918] [413] ] | bottle [BOX: [360] [245] [390] [320] ] | bowl [BOX: [400] [291] [458] [313] ] | bowl [BOX: [864] [395] [999] [441] ] | person [BOX: [461] [501] [675] [811] ] <eos>",
+      "prediction": "person [BOX: [000] [000] [000] [000] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] |"
+    },
+    {
+      "image_id": 65485,
+      "task": "od",
+      "input": "<od>",
+      "ground_truth": "dog [BOX: [605] [267] [738] [490] ] | car [BOX: [011] [094] [999] [999] ] <eos>",
+      "prediction": "person [BOX: [000] [000] [000] [000] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] |"
+    },
+    {
+      "image_id": 482100,
+      "task": "od",
+      "input": "<od>",
+      "ground_truth": "<unk> [BOX: [383] [010] [439] [119] ] | <unk> [BOX: [422] [000] [503] [068] ] | <unk> [BOX: [247] [000] [327] [081] ] | toilet [BOX: [657] [347] [901] [751] ] | toilet [BOX: [390] [386] [666] [749] ] | <unk> [BOX: [528] [000] [592] [091] ] | <unk> [BOX: [604] [000] [692] [091] ] <eos>",
+      "prediction": "person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] | person [BOX: [000] [000] [000] [999] ] |"
+    }
+  ],
+  "seg": [
+    {
+      "image_id": 494869,
+      "task": "seg",
+      "input": "<seg>",
+      "ground_truth": "dog [POLY: [000] [785] [132] [711] [204] [657] [289] [683] [292] [729] [265] [767] [316] [757] [361] [765] [274] [838] [192] [848] [123] [970] [006] [802] ] | person [POLY: [441] [635] [458] [405] [541] [240] [609] [166] [694] [211] [845] [325] [649] [293] [823] [337] [632] [358] [589] [489] [491] [633] [423] [657] ] | spoon [POLY: [814] [379] [776] [360] [774] [358] [772] [356] [774] [355] [776] [355] [796] [366] [822] [379] ] | bowl [POLY: [727] [384] [741] [390] [745] [400] [805] [408] [803] [403] [812] [396] [808] [387] [793] [370] [781] [369] [739] [376] [733] [379] [728] [382] ] | bowl [POLY: [800] [379] [819] [369] [883] [371] [918] [376] [914] [385] [897] [395] [877] [400] [869] [413] [841] [413] [827] [408] [816] [398] ] <eos>",
+      "prediction": "person [POLY: [999] [999] [999] [999] [999] ] | person [POLY: [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] ] | person [POLY: [999] ] | person [POLY: [000] [999] ] | person [POLY: [999] [999] [999] [999] ] | person [POLY: [000] [999] [999] [999] [999] [999]"
+    },
+    {
+      "image_id": 65485,
+      "task": "seg",
+      "input": "<seg>",
+      "ground_truth": "dog [POLY: [605] [484] [633] [429] [655] [374] [674] [320] [681] [267] [708] [277] [714] [318] [734] [352] [726] [393] [694] [391] [694] [447] [694] [490] ] | car [POLY: [079] [713] [034] [700] [024] [404] [111] [345] [496] [114] [902] [451] [993] [983] [457] [922] [237] [999] [200] [893] [085] [929] [102] [747] ] <eos>",
+      "prediction": "person [POLY: [999] [999] [999] [999] [999] ] | person [POLY: [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] ] | person [POLY: [999] ] | person [POLY: [000] [999] ] | person [POLY: [999] [999] [999] [999] ] | person [POLY: [000] [999] [999] [999] [999] [999]"
+    },
+    {
+      "image_id": 482100,
+      "task": "seg",
+      "input": "<seg>",
+      "ground_truth": "<unk> [POLY: [387] [037] [389] [037] [389] [032] [396] [010] [426] [014] [438] [059] [438] [090] [429] [115] [416] [119] [399] [110] [387] [084] [384] [055] ] | <unk> [POLY: [481] [039] [469] [068] [439] [066] [434] [033] [448] [017] [435] [013] [433] [009] [422] [001] [497] [000] [503] [018] [491] [029] [481] [036] ] | <unk> [POLY: [268] [081] [297] [080] [302] [047] [310] [039] [321] [035] [327] [023] [323] [002] [254] [000] [250] [014] [247] [025] [251] [044] [257] [067] ] | toilet [POLY: [665] [358] [889] [361] [885] [381] [876] [554] [888] [592] [901] [625] [867] [726] [796] [733] [750] [646] [747] [581] [691] [567] [660] [358] ] | toilet [POLY: [485] [609] [495] [647] [514] [701] [565] [749] [642] [685] [666] [609] [617] [584] [639] [422] [446] [386] [390] [391] [397] [498] [449] [586] ] <eos>",
+      "prediction": "person [POLY: [999] [999] [999] [999] [999] ] | person [POLY: [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] [999] ] | person [POLY: [999] ] | person [POLY: [000] [999] ] | person [POLY: [999] [999] [999] [999] ] | person [POLY: [000] [999] [999] [999] [999] [999]"
+    }
+  ],
+  "vqa": [
+    {
+      "image_id": 494869,
+      "task": "vqa",
+      "input": "<vqa> how many dog are in the image ? |",
+      "ground_truth": "1 <eos>",
+      "prediction": "1"
+    },
+    {
+      "image_id": 494869,
+      "task": "vqa",
+      "input": "<vqa> how many person are in the image ? |",
+      "ground_truth": "2 <eos>",
+      "prediction": "2"
+    },
+    {
+      "image_id": 494869,
+      "task": "vqa",
+      "input": "<vqa> how many spoon are in the image ? |",
+      "ground_truth": "1 <eos>",
+      "prediction": "1"
+    }
+  ],
+  "describe": [
+    {
+      "image_id": 517069,
+      "task": "describe",
+      "input": "<describe>",
+      "ground_truth": "a woman sitting on a bench and a woman standing behind the bench at a bus stop <eos>",
+      "prediction": "a man in a suit and a black jacket and a black jacket and black jacket and black jacket and black jacket and black jacket ."
+    },
+    {
+      "image_id": 182417,
+      "task": "describe",
+      "input": "<describe>",
+      "ground_truth": "there is a piece of cake on a plate with decorations on it . <eos>",
+      "prediction": "a man in a black jacket and black jacket and black jacket and black jacket and black jacket and black jacket ."
+    },
+    {
+      "image_id": 482917,
+      "task": "describe",
+      "input": "<describe>",
+      "ground_truth": "a dog sitting between its masters feet on a footstool watching tv <eos>",
+      "prediction": "a man is standing on a court with a man in a suit , a suit , and a black jacket ."
+    }
+  ]
+}

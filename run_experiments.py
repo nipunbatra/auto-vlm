@@ -245,11 +245,21 @@ def git_commit_and_push(run_num, description, val_loss, improv_pct):
             msg += f", {improv_pct:.1f}%"
         msg += ")"
 
+    # Generate sample predictions if model exists
+    if Path("checkpoint/model.safetensors").exists():
+        try:
+            from generate_samples import generate_samples, save_samples
+            samples = generate_samples(num_per_task=3)
+            save_samples(samples)
+        except Exception as e:
+            print(f"Warning: failed to generate samples: {e}")
+
     files_to_add = [
         "results.tsv",
         "experiments_plot.png",
         "train_mlx.py",
         "index.html",
+        "samples.json",
     ]
     if Path("checkpoint/config.json").exists():
         files_to_add.append("checkpoint/config.json")

@@ -128,6 +128,41 @@
             border-top: 1px solid var(--border);
         }
         footer a { color: var(--accent); text-decoration: none; }
+        /* Sample predictions */
+        details {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+        }
+        details summary {
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+            user-select: none;
+        }
+        details summary:hover { background: rgba(88, 166, 255, 0.05); }
+        details[open] summary { border-bottom: 1px solid var(--border); }
+        .sample-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 0.8rem;
+            padding: 1rem;
+        }
+        .sample-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.8rem;
+            font-size: 0.85rem;
+        }
+        .sample-card .label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 0.2rem; }
+        .sample-card .gt { color: var(--green); }
+        .sample-card .pred { color: var(--accent); }
+        .sample-card .input-text { color: var(--yellow); margin-bottom: 0.5rem; }
+        .sample-card .img-id { color: var(--text-dim); font-size: 0.7rem; }
     </style>
 </head>
 <body>
@@ -166,6 +201,12 @@
 
         <div class="plot-container">
             <img src="experiments_plot.png" alt="Experiment Progress" onerror="this.style.display='none'">
+        </div>
+
+        <!-- Sample Predictions -->
+        <div id="samples-section" style="display:none; margin-bottom: 2rem;">
+            <h2 style="margin-bottom: 1rem; font-size: 1.3rem;">Sample Predictions</h2>
+            <div id="samples-container"></div>
         </div>
 
         <div class="table-container">
@@ -246,6 +287,54 @@
                         <td>${r.description}</td>
                     </tr>`;
                 }).join('');
+            })
+            .catch(() => {});
+
+        // Load and render sample predictions
+        const taskEmoji = {
+            caption: '📝 Captioning',
+            vqa: '❓ VQA',
+            od: '📦 Object Detection',
+            seg: '🎭 Segmentation',
+            describe: '💬 Free Text'
+        };
+
+        fetch('samples.json')
+            .then(r => r.json())
+            .then(samples => {
+                const section = document.getElementById('samples-section');
+                const container = document.getElementById('samples-container');
+                if (!Object.keys(samples).length) return;
+                section.style.display = 'block';
+
+                for (const [task, taskSamples] of Object.entries(samples)) {
+                    if (!taskSamples.length) continue;
+                    const details = document.createElement('details');
+                    const summary = document.createElement('summary');
+                    summary.textContent = `${taskEmoji[task] || task} (${taskSamples.length} samples)`;
+                    details.appendChild(summary);
+
+                    const grid = document.createElement('div');
+                    grid.className = 'sample-grid';
+
+                    taskSamples.forEach(s => {
+                        const card = document.createElement('div');
+                        card.className = 'sample-card';
+                        card.innerHTML = `
+                            <div class="img-id">Image ID: ${s.image_id}</div>
+                            ${s.input && s.input !== '<' + task + '>' ?
+                                `<div class="label">Input</div><div class="input-text">${s.input}</div>` : ''}
+                            <div class="label">Ground Truth</div>
+                            <div class="gt">${s.ground_truth}</div>
+                            <div style="margin-top:0.5rem"><div class="label">Model Prediction</div>
+                            <div class="pred">${s.prediction}</div></div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                    details.appendChild(grid);
+                    container.appendChild(details);
+                }
             })
             .catch(() => {});
     </script>
