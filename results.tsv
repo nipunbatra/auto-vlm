@@ -10,3 +10,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 007	3.9629	7.8	discard	600	5.4	wd=0.5 (too much regularization)
 008	3.7105	7.8	keep	600	11.4	warmup=50 (faster ramp)
 009	3.7385	7.8	discard	600	10.8	dropout=0.0 (slight regression)
+010	3.8380	7.8	discard	600	8.4	lr=2e-3 (overshoots)
