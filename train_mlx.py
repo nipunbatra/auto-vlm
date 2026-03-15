@@ -34,7 +34,7 @@ class Config:
 
     # Language decoder
     lang_dim: int = 256
-    lang_depth: int = 4
+    lang_depth: int = 6
     lang_heads: int = 4
     max_seq_len: int = 320  # input + target combined
 

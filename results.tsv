@@ -14,3 +14,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 011	4.5897	7.8	discard	600	-9.6	task-balanced sampling (hurts easy tasks)
 012	3.8509	7.4	discard	600	8.1	patch_size=16 (slower, fewer steps)
 013	3.5172	7.8	keep	600	16.0	bs=2 (4x more steps than bs=8)
+014	3.4889	9.4	keep	600	16.7	lang_depth=6 (deeper decoder, 9.38M)
