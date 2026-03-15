@@ -84,7 +84,7 @@ class TransformerBlock(nn.Module):
     """Standard transformer block with pre-norm."""
 
     def __init__(self, dim: int, num_heads: int, mlp_ratio: float = 4.0,
-                 dropout: float = 0.0, causal: bool = False):
+                 dropout: float = 0.1, causal: bool = False):
         super().__init__()
         self.norm1 = nn.LayerNorm(dim)
         self.norm2 = nn.LayerNorm(dim)
