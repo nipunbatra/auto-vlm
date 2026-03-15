@@ -16,3 +16,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 013	3.5172	7.8	keep	600	16.0	bs=2 (4x more steps than bs=8)
 014	3.4889	9.4	keep	600	16.7	lang_depth=6 (deeper decoder, 9.38M)
 015	3.4627	9.8	keep	600	17.3	vision_depth=4 (9.82M)
+016	3.4569	18.7	discard	1200	17.5	bigger model 18.68M + 20min (marginal gain)

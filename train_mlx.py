@@ -45,7 +45,7 @@ class Config:
     warmup_steps: int = 50
     dropout: float = 0.1
     grad_clip: float = 1.0
-    time_budget: int = 600  # seconds
+    time_budget: int = 1800  # seconds
 
     # Loss weights
     ce_weight: float = 1.0
