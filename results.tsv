@@ -18,3 +18,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 015	3.4627	9.8	keep	600	17.3	vision_depth=4 (9.82M)
 016	3.4569	18.7	discard	1200	17.5	bigger model 18.68M + 20min (marginal gain)
 017	3.3831	9.8	keep	1800	19.2	30min training (4 epochs, 90K steps)
+018	3.2351	9.8	keep	3600	22.8	60min training (7 epochs, 172K steps)
