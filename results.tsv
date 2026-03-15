@@ -6,3 +6,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 003	4.0598	7.8	keep	600	3.1	lr=1e-3
 004	4.6965	7.8	discard	600	-12.1	lr=1e-2 (too high, diverged)
 005	4.4612	7.8	discard	600	-6.5	bs=16 (fewer steps, worse)
+006	3.7428	7.8	keep	600	10.7	bs=4 (2x more steps)
