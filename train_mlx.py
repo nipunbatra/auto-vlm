@@ -29,7 +29,7 @@ class Config:
     image_size: int = 224
     patch_size: int = 32
     vision_dim: int = 192
-    vision_depth: int = 3
+    vision_depth: int = 4
     vision_heads: int = 3
 
     # Language decoder
