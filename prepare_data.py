@@ -45,10 +45,16 @@ VQA_TOKEN = "<vqa>"
 OD_TOKEN = "<od>"
 SEG_TOKEN = "<seg>"
 DESCRIBE_TOKEN = "<describe>"
+# Structural delimiters (Florence-2 style)
+BOX_OPEN = "<box>"
+BOX_CLOSE = "</box>"
+POLY_OPEN = "<poly>"
+POLY_CLOSE = "</poly>"
 
 SPECIAL_TOKENS = [
     PAD_TOKEN, BOS_TOKEN, EOS_TOKEN, UNK_TOKEN, SEP_TOKEN,
     CAPTION_TOKEN, VQA_TOKEN, OD_TOKEN, SEG_TOKEN, DESCRIBE_TOKEN,
+    BOX_OPEN, BOX_CLOSE, POLY_OPEN, POLY_CLOSE,
 ]
 NUM_SPECIAL = len(SPECIAL_TOKENS)
 
@@ -315,7 +321,9 @@ def generate_od_examples(instances_data, id_to_cat):
             if target_tokens:
                 target_tokens.append(SEP_TOKEN)
             target_tokens.append(cat_name)
+            target_tokens.append(BOX_OPEN)
             target_tokens.extend(box_tokens)
+            target_tokens.append(BOX_CLOSE)
         target_tokens.append(EOS_TOKEN)
 
         examples.append({
@@ -359,7 +367,9 @@ def generate_seg_examples(instances_data, id_to_cat):
             if target_tokens:
                 target_tokens.append(SEP_TOKEN)
             target_tokens.append(cat_name)
+            target_tokens.append(POLY_OPEN)
             target_tokens.extend(poly_tokens)
+            target_tokens.append(POLY_CLOSE)
         if not target_tokens:
             continue
         target_tokens.append(EOS_TOKEN)

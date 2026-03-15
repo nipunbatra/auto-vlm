@@ -10,6 +10,8 @@ dependencies = [
     "matplotlib>=3.8.0",
     "requests>=2.31.0",
     "pycocotools>=2.0.7",
+    "streamlit>=1.30.0",
+    "pandas>=2.0.0",
 ]
 
 [build-system]
