@@ -8,3 +8,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 005	4.4612	7.8	discard	600	-6.5	bs=16 (fewer steps, worse)
 006	3.7428	7.8	keep	600	10.7	bs=4 (2x more steps)
 007	3.9629	7.8	discard	600	5.4	wd=0.5 (too much regularization)
+008	3.7105	7.8	keep	600	11.4	warmup=50 (faster ramp)

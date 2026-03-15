@@ -42,7 +42,7 @@ class Config:
     batch_size: int = 4
     learning_rate: float = 1e-3
     weight_decay: float = 0.1
-    warmup_steps: int = 200
+    warmup_steps: int = 50
     dropout: float = 0.1
     grad_clip: float = 1.0
     time_budget: int = 600  # seconds
