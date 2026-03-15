@@ -1,3 +1,4 @@
 run	val_loss	params_M	status	time_s	improv_%	description
 001	4.1895	7.8	keep	600	0.0	baseline: structural tokens, patch32 vdim192 vd3 ldim256 ld4 bs8 lr3e-4
 002	4.1338	7.8	keep	600	1.3	lr=3e-3 (10x higher)
+003	3.9864	7.8	keep	600	4.8	lr=1e-3
