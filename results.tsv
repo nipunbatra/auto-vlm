@@ -11,3 +11,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 008	3.7105	7.8	keep	600	11.4	warmup=50 (faster ramp)
 009	3.7385	7.8	discard	600	10.8	dropout=0.0 (slight regression)
 010	3.8380	7.8	discard	600	8.4	lr=2e-3 (overshoots)
+011	4.5897	7.8	discard	600	-9.6	task-balanced sampling (hurts easy tasks)
