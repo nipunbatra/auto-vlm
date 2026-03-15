@@ -3,3 +3,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 002	4.1338	7.8	keep	600	1.3	lr=3e-3 (10x higher)
 003	3.9864	7.8	keep	600	4.8	lr=1e-3
 002	4.1176	7.8	keep	600	1.7	lr=3e-3 (10x higher)
+003	4.0598	7.8	keep	600	3.1	lr=1e-3
