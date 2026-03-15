@@ -465,7 +465,7 @@ def train():
 
     # Create datasets
     train_dataset = MultiTaskDataset(train_examples, images, CONFIG, shuffle=True)
-    val_dataset = MultiTaskDataset(val_examples, images, CONFIG, shuffle=False)
+    val_dataset = MultiTaskDataset(val_examples, images, CONFIG, shuffle=True)
 
     # Build model
     print("\nBuilding model...")
@@ -547,8 +547,8 @@ def train():
     model.eval()
 
     num_val_batches = 0
-    for batch in val_dataset.get_batches():
-        if num_val_batches >= 50:  # Cap validation
+    for batch in val_dataset.get_batches(rng=np.random.RandomState(42)):
+        if num_val_batches >= 200:  # Cap validation
             break
         images_batch, input_ids, target_ids, tasks = batch
         logits = model(images_batch, input_ids, target_ids)
