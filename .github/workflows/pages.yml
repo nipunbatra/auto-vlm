@@ -30,6 +30,7 @@ jobs:
           cp results.tsv _site/ 2>/dev/null || true
           cp experiments_plot.png _site/ 2>/dev/null || true
           cp samples.json _site/ 2>/dev/null || true
+          cp samples_*.json _site/ 2>/dev/null || true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
       - name: Deploy to GitHub Pages

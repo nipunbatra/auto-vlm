@@ -25,94 +25,46 @@
             padding: 2rem;
         }
         .container { max-width: 1200px; margin: 0 auto; }
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-        .subtitle {
-            color: var(--text-dim);
-            margin-bottom: 2rem;
-            font-size: 0.95rem;
-        }
+        h1 { font-size: 1.8rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+        .subtitle { color: var(--text-dim); margin-bottom: 2rem; font-size: 0.95rem; }
         .stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            gap: 1rem; margin-bottom: 2rem;
         }
         .stat-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.2rem;
-            text-align: center;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 1.2rem; text-align: center;
         }
         .stat-card .label {
-            font-size: 0.8rem;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            font-size: 0.8rem; color: var(--text-dim);
+            text-transform: uppercase; letter-spacing: 0.05em;
         }
-        .stat-card .value {
-            font-size: 1.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin-top: 0.3rem;
-        }
+        .stat-card .value { font-size: 1.8rem; font-weight: 600; color: var(--accent); margin-top: 0.3rem; }
         .stat-card .value.green { color: var(--green); }
         .stat-card .value.yellow { color: var(--yellow); }
-        .tasks {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 2rem;
-        }
+        .tasks { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 2rem; }
         .task-badge {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.8rem;
-            color: var(--text-dim);
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 0.3rem 0.8rem; font-size: 0.8rem; color: var(--text-dim);
         }
         .plot-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            text-align: center;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; padding: 1rem; margin-bottom: 2rem; text-align: center;
         }
-        .plot-container img {
-            max-width: 100%;
-            border-radius: 4px;
-        }
+        .plot-container img { max-width: 100%; border-radius: 4px; }
         .table-container {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; overflow: hidden;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
         th {
-            background: var(--bg);
-            padding: 0.8rem;
-            text-align: left;
-            color: var(--text-dim);
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            position: sticky;
-            top: 0;
+            background: var(--bg); padding: 0.8rem; text-align: left;
+            color: var(--text-dim); font-weight: 600; border-bottom: 1px solid var(--border);
+            position: sticky; top: 0;
         }
-        td {
-            padding: 0.6rem 0.8rem;
-            border-bottom: 1px solid var(--border);
-        }
+        td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); }
         tr:hover { background: rgba(88, 166, 255, 0.05); }
         tr.best { background: rgba(46, 160, 67, 0.1); }
         .status-keep { color: var(--green); font-weight: 600; }
@@ -120,223 +72,271 @@
         .status-crash { color: var(--yellow); }
         .scrollable { max-height: 500px; overflow-y: auto; }
         footer {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
+            text-align: center; color: var(--text-dim); font-size: 0.8rem;
+            margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border);
         }
         footer a { color: var(--accent); text-decoration: none; }
-        /* Sample predictions */
+
+        /* ── Sample predictions ── */
         details {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            margin-bottom: 0.8rem;
-            overflow: hidden;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 8px; margin-bottom: 0.8rem; overflow: hidden;
         }
         details summary {
-            padding: 0.8rem 1rem;
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--text);
-            user-select: none;
+            padding: 0.8rem 1rem; cursor: pointer; font-weight: 600;
+            color: var(--text); user-select: none;
         }
         details summary:hover { background: rgba(88, 166, 255, 0.05); }
         details[open] summary { border-bottom: 1px solid var(--border); }
         .sample-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 0.8rem;
-            padding: 1rem;
+            gap: 0.8rem; padding: 1rem;
         }
         .sample-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 0.8rem;
-            font-size: 0.85rem;
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 6px; padding: 0.8rem; font-size: 0.85rem;
         }
-        .sample-card .label { color: var(--text-dim); font-size: 0.75rem; text-transform: uppercase; margin-bottom: 0.2rem; }
-        .sample-card .gt { color: var(--green); }
-        .sample-card .pred { color: var(--accent); }
-        .sample-card .input-text { color: var(--yellow); margin-bottom: 0.5rem; }
+        .sample-card img {
+            width: 100%; max-width: 224px; border-radius: 4px;
+            margin-bottom: 0.5rem; display: block;
+        }
+        .sample-card .lbl { color: var(--text-dim); font-size: 0.7rem; text-transform: uppercase; margin-top: 0.4rem; }
+        .sample-card .gt  { color: var(--green); word-break: break-word; }
+        .sample-card .pred { color: var(--accent); word-break: break-word; }
+        .sample-card .inp  { color: var(--yellow); margin-bottom: 0.3rem; word-break: break-word; }
         .sample-card .img-id { color: var(--text-dim); font-size: 0.7rem; }
+
+        /* Experiment selector */
+        .exp-selector {
+            display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap;
+        }
+        .exp-selector select {
+            background: var(--surface); color: var(--text); border: 1px solid var(--border);
+            border-radius: 6px; padding: 0.4rem 0.8rem; font-size: 0.9rem; cursor: pointer;
+        }
+        .exp-selector label { color: var(--text-dim); font-size: 0.85rem; }
+        .compare-toggle { color: var(--text-dim); font-size: 0.8rem; cursor: pointer; }
+        .compare-toggle input { margin-right: 0.3rem; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Auto-VLM</h1>
-        <p class="subtitle">
-            Autonomous research: training a tiny (&lt;10M param) multi-task Vision-Language Model from scratch in MLX
-        </p>
+<div class="container">
+    <h1>Auto-VLM</h1>
+    <p class="subtitle">
+        Autonomous research: training a tiny (&lt;10M param) multi-task Vision-Language Model from scratch in MLX
+    </p>
 
-        <div class="tasks">
-            <span class="task-badge">📝 Captioning</span>
-            <span class="task-badge">❓ VQA</span>
-            <span class="task-badge">📦 Object Detection</span>
-            <span class="task-badge">🎭 Segmentation</span>
-            <span class="task-badge">💬 Free Text</span>
-        </div>
-
-        <div class="stats">
-            <div class="stat-card">
-                <div class="label">Experiments</div>
-                <div class="value" id="total-exp">3</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Kept</div>
-                <div class="value green" id="kept-exp">3</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Best Val Loss</div>
-                <div class="value" id="best-loss">3.9864</div>
-            </div>
-            <div class="stat-card">
-                <div class="label">Improvement</div>
-                <div class="value yellow" id="improvement">4.8%</div>
-            </div>
-        </div>
-
-        <div class="plot-container">
-            <img src="experiments_plot.png" alt="Experiment Progress" onerror="this.style.display='none'">
-        </div>
-
-        <!-- Sample Predictions -->
-        <div id="samples-section" style="display:none; margin-bottom: 2rem;">
-            <h2 style="margin-bottom: 1rem; font-size: 1.3rem;">Sample Predictions</h2>
-            <div id="samples-container"></div>
-        </div>
-
-        <div class="table-container">
-            <div class="scrollable" id="results-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Run</th>
-                            <th>Val Loss</th>
-                            <th>Params (M)</th>
-                            <th>Status</th>
-                            <th>Time (s)</th>
-                            <th>Improvement</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody id="results-body">
-                        <tr><td colspan="7" style="text-align:center;color:var(--text-dim)">
-                            No experiments yet. Run <code>python run_experiments.py</code> to start.
-                        </td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <footer>
-            <p>
-                Auto-VLM — Trained on Apple M3 with MLX
-                · <a href="https://github.com/nipunbatra/auto-vlm">GitHub</a>
-                · Powered by autonomous AI research
-            </p>
-        </footer>
+    <div class="tasks">
+        <span class="task-badge">📝 Captioning</span>
+        <span class="task-badge">❓ VQA</span>
+        <span class="task-badge">📦 Object Detection</span>
+        <span class="task-badge">🎭 Segmentation</span>
+        <span class="task-badge">💬 Free Text</span>
     </div>
 
-    <script>
-        // Load and render results.tsv
-        fetch('results.tsv')
-            .then(r => r.text())
-            .then(tsv => {
-                const lines = tsv.trim().split('\n');
-                if (lines.length < 2) return;
+    <div class="stats">
+        <div class="stat-card"><div class="label">Experiments</div><div class="value" id="total-exp">0</div></div>
+        <div class="stat-card"><div class="label">Kept</div><div class="value green" id="kept-exp">0</div></div>
+        <div class="stat-card"><div class="label">Best Val Loss</div><div class="value" id="best-loss">—</div></div>
+        <div class="stat-card"><div class="label">Improvement</div><div class="value yellow" id="improvement">0%</div></div>
+    </div>
 
-                const headers = lines[0].split('\t');
-                const rows = lines.slice(1).map(l => {
-                    const vals = l.split('\t');
-                    return Object.fromEntries(headers.map((h, i) => [h, vals[i]]));
-                });
+    <div class="plot-container">
+        <img src="experiments_plot.png" alt="Experiment Progress" onerror="this.style.display='none'">
+    </div>
 
-                // Update stats
-                const kept = rows.filter(r => r.status === 'keep');
-                document.getElementById('total-exp').textContent = rows.length;
-                document.getElementById('kept-exp').textContent = kept.length;
+    <!-- ── Sample Predictions ── -->
+    <div id="samples-section" style="display:none; margin-bottom: 2rem;">
+        <h2>Sample Predictions</h2>
+        <div class="exp-selector">
+            <label for="exp-select">Experiment:</label>
+            <select id="exp-select"><option value="latest">Latest</option></select>
+            <label class="compare-toggle">
+                <input type="checkbox" id="compare-check"> Compare with another
+            </label>
+            <select id="exp-compare" style="display:none"><option value="">—</option></select>
+        </div>
+        <div id="samples-container"></div>
+    </div>
 
-                let bestLoss = Infinity, bestImprov = 0;
-                kept.forEach(r => {
-                    const vl = parseFloat(r.val_loss);
-                    if (!isNaN(vl) && vl < bestLoss) bestLoss = vl;
-                    const imp = parseFloat(r['improv_%']);
-                    if (!isNaN(imp) && imp > bestImprov) bestImprov = imp;
-                });
-                if (bestLoss < Infinity) {
-                    document.getElementById('best-loss').textContent = bestLoss.toFixed(4);
-                }
-                document.getElementById('improvement').textContent = bestImprov.toFixed(1) + '%';
+    <!-- ── Results Table ── -->
+    <div class="table-container">
+        <div class="scrollable" id="results-table">
+            <table>
+                <thead><tr>
+                    <th>Run</th><th>Val Loss</th><th>Params (M)</th>
+                    <th>Status</th><th>Time (s)</th><th>Improvement</th><th>Description</th>
+                </tr></thead>
+                <tbody id="results-body">
+                    <tr><td colspan="7" style="text-align:center;color:var(--text-dim)">
+                        No experiments yet.
+                    </td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-                // Render table (newest first)
-                const tbody = document.getElementById('results-body');
-                tbody.innerHTML = rows.reverse().map(r => {
-                    const statusClass = `status-${r.status}`;
-                    const isBest = parseFloat(r.val_loss) === bestLoss && r.status === 'keep';
-                    return `<tr class="${isBest ? 'best' : ''}">
-                        <td>${r.run}</td>
-                        <td>${r.val_loss}</td>
-                        <td>${r.params_M}</td>
-                        <td class="${statusClass}">${r.status}</td>
-                        <td>${r.time_s}</td>
-                        <td>${r['improv_%']}</td>
-                        <td>${r.description}</td>
-                    </tr>`;
-                }).join('');
-            })
-            .catch(() => {});
+    <footer>
+        <p>Auto-VLM — Trained on Apple M3 with MLX
+            · <a href="https://github.com/nipunbatra/auto-vlm">GitHub</a>
+            · Powered by autonomous AI research</p>
+    </footer>
+</div>
 
-        // Load and render sample predictions
-        const taskEmoji = {
-            caption: '📝 Captioning',
-            vqa: '❓ VQA',
-            od: '📦 Object Detection',
-            seg: '🎭 Segmentation',
-            describe: '💬 Free Text'
-        };
+<script>
+const taskEmoji = {
+    caption:  '📝 Captioning',
+    vqa:      '❓ VQA',
+    od:       '📦 Object Detection',
+    seg:      '🎭 Segmentation',
+    describe: '💬 Free Text'
+};
 
-        fetch('samples.json')
-            .then(r => r.json())
-            .then(samples => {
-                const section = document.getElementById('samples-section');
-                const container = document.getElementById('samples-container');
-                if (!Object.keys(samples).length) return;
-                section.style.display = 'block';
+// ── Results table ──
+fetch('results.tsv').then(r => r.text()).then(tsv => {
+    const lines = tsv.trim().split('\n');
+    if (lines.length < 2) return;
+    const headers = lines[0].split('\t');
+    const rows = lines.slice(1).map(l => {
+        const vals = l.split('\t');
+        return Object.fromEntries(headers.map((h, i) => [h, vals[i]]));
+    });
+    const kept = rows.filter(r => r.status === 'keep');
+    document.getElementById('total-exp').textContent = rows.length;
+    document.getElementById('kept-exp').textContent = kept.length;
+    let bestLoss = Infinity, bestImprov = 0;
+    kept.forEach(r => {
+        const vl = parseFloat(r.val_loss);
+        if (!isNaN(vl) && vl < bestLoss) bestLoss = vl;
+        const imp = parseFloat(r['improv_%']);
+        if (!isNaN(imp) && imp > bestImprov) bestImprov = imp;
+    });
+    if (bestLoss < Infinity) document.getElementById('best-loss').textContent = bestLoss.toFixed(4);
+    document.getElementById('improvement').textContent = bestImprov.toFixed(1) + '%';
+    const tbody = document.getElementById('results-body');
+    tbody.innerHTML = rows.slice().reverse().map(r => {
+        const isBest = parseFloat(r.val_loss) === bestLoss && r.status === 'keep';
+        return `<tr class="${isBest ? 'best' : ''}">
+            <td>${r.run}</td><td>${r.val_loss}</td><td>${r.params_M}</td>
+            <td class="status-${r.status}">${r.status}</td>
+            <td>${r.time_s}</td><td>${r['improv_%']}</td><td>${r.description}</td></tr>`;
+    }).join('');
+}).catch(() => {});
 
-                for (const [task, taskSamples] of Object.entries(samples)) {
-                    if (!taskSamples.length) continue;
-                    const details = document.createElement('details');
-                    const summary = document.createElement('summary');
-                    summary.textContent = `${taskEmoji[task] || task} (${taskSamples.length} samples)`;
-                    details.appendChild(summary);
+// ── Sample Predictions ──
+let manifest = [];
+let samplesCache = {};
 
-                    const grid = document.createElement('div');
-                    grid.className = 'sample-grid';
+function renderSamples(data, compareData) {
+    const container = document.getElementById('samples-container');
+    container.innerHTML = '';
+    const samples = data.samples || data;   // support old and new format
+    if (!samples || !Object.keys(samples).length) return;
 
-                    taskSamples.forEach(s => {
-                        const card = document.createElement('div');
-                        card.className = 'sample-card';
-                        card.innerHTML = `
-                            <div class="img-id">Image ID: ${s.image_id}</div>
-                            ${s.input && s.input !== '<' + task + '>' ?
-                                `<div class="label">Input</div><div class="input-text">${s.input}</div>` : ''}
-                            <div class="label">Ground Truth</div>
-                            <div class="gt">${s.ground_truth}</div>
-                            <div style="margin-top:0.5rem"><div class="label">Model Prediction</div>
-                            <div class="pred">${s.prediction}</div></div>
-                        `;
-                        grid.appendChild(card);
-                    });
+    for (const [task, taskSamples] of Object.entries(samples)) {
+        if (!taskSamples || !taskSamples.length) continue;
+        const details = document.createElement('details');
+        const summary = document.createElement('summary');
+        summary.textContent = `${taskEmoji[task] || task} (${taskSamples.length} samples)`;
+        details.appendChild(summary);
 
-                    details.appendChild(grid);
-                    container.appendChild(details);
-                }
-            })
-            .catch(() => {});
-    </script>
+        const grid = document.createElement('div');
+        grid.className = 'sample-grid';
+
+        taskSamples.forEach((s, idx) => {
+            const compareSample = compareData
+                ? (compareData.samples || compareData)[task]?.[idx] : null;
+
+            const card = document.createElement('div');
+            card.className = 'sample-card';
+
+            let html = '';
+            // Image
+            if (s.image_b64) {
+                html += `<img src="data:image/jpeg;base64,${s.image_b64}" alt="img ${s.image_id}">`;
+            }
+            html += `<div class="img-id">Image ID: ${s.image_id}</div>`;
+
+            // Input (for VQA)
+            if (s.input && !s.input.startsWith('<'))
+                html += `<div class="lbl">Input</div><div class="inp">${esc(s.input)}</div>`;
+
+            // Ground truth
+            html += `<div class="lbl">Ground Truth</div><div class="gt">${esc(s.ground_truth)}</div>`;
+
+            // Prediction
+            html += `<div class="lbl">Prediction ${data.run ? '(exp ' + data.run + ')' : ''}</div>`;
+            html += `<div class="pred">${esc(s.prediction)}</div>`;
+
+            // Compare prediction
+            if (compareSample) {
+                html += `<div class="lbl" style="margin-top:0.6rem">Prediction (exp ${compareData.run})</div>`;
+                html += `<div class="pred" style="color:var(--yellow)">${esc(compareSample.prediction)}</div>`;
+            }
+
+            card.innerHTML = html;
+            grid.appendChild(card);
+        });
+
+        details.appendChild(grid);
+        container.appendChild(details);
+    }
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+async function loadSamples(key) {
+    if (samplesCache[key]) return samplesCache[key];
+    const file = key === 'latest' ? 'samples.json' : `samples_${String(key).padStart(3,'0')}.json`;
+    try {
+        const r = await fetch(file);
+        if (!r.ok) return null;
+        const data = await r.json();
+        samplesCache[key] = data;
+        return data;
+    } catch { return null; }
+}
+
+async function updateSamples() {
+    const sel = document.getElementById('exp-select');
+    const data = await loadSamples(sel.value);
+    if (!data) return;
+
+    let compareData = null;
+    if (document.getElementById('compare-check').checked) {
+        const cmp = document.getElementById('exp-compare').value;
+        if (cmp) compareData = await loadSamples(cmp);
+    }
+    renderSamples(data, compareData);
+}
+
+// Init: load manifest, populate dropdowns, show latest
+fetch('samples_manifest.json').then(r => r.json()).then(m => {
+    manifest = m;
+    const sel = document.getElementById('exp-select');
+    const cmp = document.getElementById('exp-compare');
+    m.forEach(run => {
+        const opt = new Option(`Exp ${String(run).padStart(3,'0')}`, run);
+        sel.appendChild(opt);
+        cmp.appendChild(opt.cloneNode(true));
+    });
+}).catch(() => {}).finally(() => {
+    // Always try to load latest
+    loadSamples('latest').then(data => {
+        if (data) {
+            document.getElementById('samples-section').style.display = 'block';
+            renderSamples(data, null);
+        }
+    });
+});
+
+document.getElementById('exp-select').addEventListener('change', updateSamples);
+document.getElementById('exp-compare').addEventListener('change', updateSamples);
+document.getElementById('compare-check').addEventListener('change', e => {
+    document.getElementById('exp-compare').style.display = e.target.checked ? '' : 'none';
+    updateSamples();
+});
+</script>
 </body>
 </html>

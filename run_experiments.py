@@ -249,8 +249,8 @@ def git_commit_and_push(run_num, description, val_loss, improv_pct):
     if Path("checkpoint/model.safetensors").exists():
         try:
             from generate_samples import generate_samples, save_samples
-            samples = generate_samples(num_per_task=3)
-            save_samples(samples)
+            samples = generate_samples(num_per_task=3, run_num=run_num)
+            save_samples(samples, run_num=run_num)
         except Exception as e:
             print(f"Warning: failed to generate samples: {e}")
 
@@ -260,6 +260,8 @@ def git_commit_and_push(run_num, description, val_loss, improv_pct):
         "train_mlx.py",
         "index.html",
         "samples.json",
+        "samples_manifest.json",
+        f"samples_{run_num:03d}.json",
     ]
     if Path("checkpoint/config.json").exists():
         files_to_add.append("checkpoint/config.json")
