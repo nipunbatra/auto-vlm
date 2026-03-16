@@ -6,3 +6,5 @@ run	val_loss	params_M	status	time_s	improv_%	description
 005	2.8903	7.5	keep	3600	17.4	lr=3e-4 (VQA=2.09!)
 006	2.9947	7.5	discard	3600	14.4	lr=1e-4 (too slow)
 007	2.9829	9.1	discard	3600	14.8	lang_depth=8 (slower, fewer steps)
+008	3.0476	13.0	discard	3600	12.9	unfrozen vision (slower, no benefit)
+009	3.0546	7.5	discard	7200	12.7	2hr training (overfitting after 5 epochs)

@@ -34,7 +34,7 @@ class Config:
     patch_size: int = 16  # DeiT-Tiny uses patch_size=16
     vision_dim: int = 192  # DeiT-Tiny embed_dim
     vision_model: str = "vit_tiny_patch16_224"
-    freeze_vision: bool = False
+    freeze_vision: bool = True
 
     # Language decoder
     lang_dim: int = 256
@@ -351,12 +351,22 @@ def train():
     print(f"  Trainable: {trainable_params:,} ({trainable_params / 1e6:.2f}M)")
     print(f"  Frozen (vision): {frozen_params:,} ({frozen_params / 1e6:.2f}M)")
 
-    # Optimizer (only trainable params)
-    optimizer = torch.optim.AdamW(
-        [p for p in model.parameters() if p.requires_grad],
-        lr=CONFIG.learning_rate,
-        weight_decay=CONFIG.weight_decay,
-    )
+    # Optimizer: differential lr if vision is unfrozen
+    if not CONFIG.freeze_vision:
+        vision_lr = CONFIG.learning_rate * 0.01  # 100x smaller for pretrained vision
+        param_groups = [
+            {"params": model.vision_encoder.parameters(), "lr": vision_lr},
+            {"params": model.projector.parameters(), "lr": CONFIG.learning_rate},
+            {"params": model.decoder.parameters(), "lr": CONFIG.learning_rate},
+        ]
+        optimizer = torch.optim.AdamW(param_groups, weight_decay=CONFIG.weight_decay)
+        print(f"  Vision lr: {vision_lr}, Decoder lr: {CONFIG.learning_rate}")
+    else:
+        optimizer = torch.optim.AdamW(
+            [p for p in model.parameters() if p.requires_grad],
+            lr=CONFIG.learning_rate,
+            weight_decay=CONFIG.weight_decay,
+        )
 
     # Training loop
     print(f"\nTraining for {CONFIG.time_budget}s...")
