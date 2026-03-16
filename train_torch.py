@@ -49,7 +49,7 @@ class Config:
     warmup_steps: int = 100
     dropout: float = 0.1
     grad_clip: float = 1.0
-    time_budget: int = 1800  # seconds
+    time_budget: int = 3600  # seconds
 
     # Data
     vocab_size: int = 0  # Set from tokenizer
