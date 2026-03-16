@@ -44,7 +44,7 @@ class Config:
     weight_decay: float = 0.1
     warmup_steps: int = 50
     dropout: float = 0.1
-    grad_clip: float = 1.0
+    grad_clip: float = 0.5
     time_budget: int = 3600  # seconds
 
     # Loss weights
