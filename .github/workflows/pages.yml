@@ -31,6 +31,10 @@ jobs:
           cp experiments_plot.png _site/ 2>/dev/null || true
           cp samples.json _site/ 2>/dev/null || true
           cp samples_*.json _site/ 2>/dev/null || true
+          cp torch.html _site/ 2>/dev/null || true
+          cp results_torch.tsv _site/ 2>/dev/null || true
+          cp experiments_torch_plot.png _site/ 2>/dev/null || true
+          cp samples_torch*.json _site/ 2>/dev/null || true
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
       - name: Deploy to GitHub Pages

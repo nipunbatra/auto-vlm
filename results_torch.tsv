@@ -1,0 +1,2 @@
+run	val_loss	params_M	status	time_s	improv_%	description
+001	3.5000	7.5	keep	600	0.0	baseline: pretrained DeiT-Tiny frozen, bs=4, lr=5e-4

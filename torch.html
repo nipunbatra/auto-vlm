@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto-VLM (PyTorch) — Pretrained Vision Encoder</title>
+    <style>
+        :root { --bg:#0d1117; --surface:#161b22; --border:#30363d; --text:#c9d1d9; --text-dim:#8b949e; --accent:#58a6ff; --green:#2ea043; --red:#f85149; --yellow:#d29922; --purple:#a371f7; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif; line-height:1.6; padding:2rem; }
+        .container { max-width:1200px; margin:0 auto; }
+        h1 { font-size:1.8rem; margin-bottom:0.5rem; }
+        h2 { font-size:1.3rem; margin-bottom:1rem; }
+        .subtitle { color:var(--text-dim); margin-bottom:1rem; font-size:0.95rem; }
+        .nav { margin-bottom:2rem; }
+        .nav a { color:var(--accent); text-decoration:none; margin-right:1.5rem; font-size:0.9rem; }
+        .nav a:hover { text-decoration:underline; }
+        .nav .active { color:var(--purple); font-weight:600; border-bottom:2px solid var(--purple); padding-bottom:2px; }
+        .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1rem; margin-bottom:2rem; }
+        .stat-card { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1.2rem; text-align:center; }
+        .stat-card .label { font-size:0.8rem; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.05em; }
+        .stat-card .value { font-size:1.8rem; font-weight:600; color:var(--purple); margin-top:0.3rem; }
+        .stat-card .value.green { color:var(--green); }
+        .stat-card .value.yellow { color:var(--yellow); }
+        .tasks { display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2rem; }
+        .task-badge { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:0.3rem 0.8rem; font-size:0.8rem; color:var(--text-dim); }
+        .plot-container { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:1rem; margin-bottom:2rem; text-align:center; }
+        .plot-container img { max-width:100%; border-radius:4px; }
+        .table-container { background:var(--surface); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+        table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+        th { background:var(--bg); padding:0.8rem; text-align:left; color:var(--text-dim); font-weight:600; border-bottom:1px solid var(--border); position:sticky; top:0; }
+        td { padding:0.6rem 0.8rem; border-bottom:1px solid var(--border); }
+        tr:hover { background:rgba(163,113,247,0.05); }
+        tr.best { background:rgba(46,160,67,0.1); }
+        .status-keep { color:var(--green); font-weight:600; }
+        .status-discard { color:var(--red); }
+        .status-crash { color:var(--yellow); }
+        .scrollable { max-height:500px; overflow-y:auto; }
+        footer { text-align:center; color:var(--text-dim); font-size:0.8rem; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--border); }
+        footer a { color:var(--accent); text-decoration:none; }
+        details { background:var(--surface); border:1px solid var(--border); border-radius:8px; margin-bottom:0.8rem; overflow:hidden; }
+        details summary { padding:0.8rem 1rem; cursor:pointer; font-weight:600; user-select:none; }
+        details summary:hover { background:rgba(163,113,247,0.05); }
+        details[open] summary { border-bottom:1px solid var(--border); }
+        .sample-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:0.8rem; padding:1rem; }
+        .sample-card { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:0.8rem; font-size:0.85rem; }
+        .sample-card img { width:100%; max-width:224px; border-radius:4px; margin-bottom:0.5rem; display:block; }
+        .sample-card .lbl { color:var(--text-dim); font-size:0.7rem; text-transform:uppercase; margin-top:0.4rem; }
+        .sample-card .gt { color:var(--green); word-break:break-word; }
+        .sample-card .pred { color:var(--purple); word-break:break-word; }
+        .sample-card .inp { color:var(--yellow); margin-bottom:0.3rem; }
+        .sample-card .img-id { color:var(--text-dim); font-size:0.7rem; }
+        .exp-selector { display:flex; align-items:center; gap:0.8rem; margin-bottom:1rem; flex-wrap:wrap; }
+        .exp-selector select { background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:6px; padding:0.4rem 0.8rem; font-size:0.9rem; }
+        .exp-selector label { color:var(--text-dim); font-size:0.85rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Auto-VLM <span style="color:var(--purple)">(PyTorch)</span></h1>
+    <p class="subtitle">
+        Pretrained DeiT-Tiny vision encoder (frozen) + trainable language decoder
+    </p>
+
+    <div class="nav">
+        <a href="index.html">MLX (from scratch)</a>
+        <a href="torch.html" class="active">PyTorch (pretrained)</a>
+    </div>
+
+    <div class="tasks">
+        <span class="task-badge">📝 Captioning</span>
+        <span class="task-badge">❓ VQA</span>
+        <span class="task-badge">📦 Object Detection</span>
+        <span class="task-badge">🎭 Segmentation</span>
+        <span class="task-badge">💬 Free Text</span>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card"><div class="label">Experiments</div><div class="value" id="total-exp">0</div></div>
+        <div class="stat-card"><div class="label">Kept</div><div class="value green" id="kept-exp">0</div></div>
+        <div class="stat-card"><div class="label">Best Val Loss</div><div class="value" id="best-loss">—</div></div>
+        <div class="stat-card"><div class="label">Improvement</div><div class="value yellow" id="improvement">0%</div></div>
+        <div class="stat-card"><div class="label">Trainable Params</div><div class="value" id="trainable">—</div></div>
+    </div>
+
+    <!-- Architecture -->
+    <div style="margin-bottom:2rem;">
+        <h2>Architecture</h2>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1rem; margin-top:1rem;">
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Vision Encoder (Pretrained DeiT-Tiny) <span style="color:var(--purple)">FROZEN</span></div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    Pretrained on ImageNet-21k (14M images)<br>
+                    12 transformer layers, dim=192, 3 heads<br>
+                    Patch 16×16 → <strong style="color:var(--text)">196 visual tokens</strong><br>
+                    5.72M params (not trainable)
+                </div>
+            </div>
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Language Decoder (Small GPT) <span style="color:var(--green)">TRAINABLE</span></div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    6 causal transformer layers, dim=256, 4 heads<br>
+                    SwiGLU + RMSNorm (LLaMA-style)<br>
+                    Vocab: ~5014 tokens<br>
+                    + projector (192 → 256)
+                </div>
+            </div>
+            <div class="stat-card" style="text-align:left;">
+                <div class="label" style="margin-bottom:0.5rem;">Key Differences vs MLX</div>
+                <div style="font-size:0.85rem; color:var(--text-dim); line-height:1.8;">
+                    ✅ Pretrained vision (vs from-scratch)<br>
+                    ✅ 196 visual tokens (vs 49)<br>
+                    ✅ ImageNet features transfer to COCO<br>
+                    ⏱️ 10 min experiments (vs 60 min)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="plot-container">
+        <img src="experiments_torch_plot.png" alt="Experiment Progress" onerror="this.style.display='none'">
+    </div>
+
+    <!-- Sample Predictions -->
+    <div id="samples-section" style="display:none; margin-bottom:2rem;">
+        <h2>Sample Predictions</h2>
+        <div class="exp-selector">
+            <label for="exp-select">Experiment:</label>
+            <select id="exp-select"><option value="latest">Latest</option></select>
+        </div>
+        <div id="samples-container"></div>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-container">
+        <div class="scrollable">
+            <table>
+                <thead><tr>
+                    <th>Run</th><th>Val Loss</th><th>Params (M)</th>
+                    <th>Status</th><th>Time (s)</th><th>Improvement</th><th>Description</th>
+                </tr></thead>
+                <tbody id="results-body">
+                    <tr><td colspan="7" style="text-align:center;color:var(--text-dim)">No experiments yet.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer>
+        <p>Auto-VLM (PyTorch) — Pretrained DeiT-Tiny + GPT decoder on Apple M3
+            · <a href="https://github.com/nipunbatra/auto-vlm">GitHub</a></p>
+    </footer>
+</div>
+
+<script>
+const taskEmoji = { caption:'📝',vqa:'❓',od:'📦',seg:'🎭',describe:'💬' };
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+fetch('results_torch.tsv').then(r=>r.text()).then(tsv=>{
+    const lines=tsv.trim().split('\n');
+    if(lines.length<2)return;
+    const headers=lines[0].split('\t');
+    const rows=lines.slice(1).map(l=>{const v=l.split('\t');return Object.fromEntries(headers.map((h,i)=>[h,v[i]]));});
+    const kept=rows.filter(r=>r.status==='keep');
+    document.getElementById('total-exp').textContent=rows.length;
+    document.getElementById('kept-exp').textContent=kept.length;
+    let bestLoss=Infinity,bestImprov=0;
+    kept.forEach(r=>{const v=parseFloat(r.val_loss);if(!isNaN(v)&&v<bestLoss)bestLoss=v;const i=parseFloat(r['improv_%']);if(!isNaN(i)&&i>bestImprov)bestImprov=i;});
+    if(bestLoss<Infinity)document.getElementById('best-loss').textContent=bestLoss.toFixed(4);
+    document.getElementById('improvement').textContent=bestImprov.toFixed(1)+'%';
+    const tbody=document.getElementById('results-body');
+    tbody.innerHTML=rows.slice().reverse().map(r=>{
+        const isBest=parseFloat(r.val_loss)===bestLoss&&r.status==='keep';
+        return `<tr class="${isBest?'best':''}"><td>${r.run}</td><td>${r.val_loss}</td><td>${r.params_M}</td><td class="status-${r.status}">${r.status}</td><td>${r.time_s}</td><td>${r['improv_%']}</td><td>${r.description}</td></tr>`;
+    }).join('');
+}).catch(()=>{});
+
+// Samples
+fetch('samples_torch.json').then(r=>r.json()).then(data=>{
+    const samples=data.samples||data;
+    if(!samples||!Object.keys(samples).length)return;
+    document.getElementById('samples-section').style.display='block';
+    const container=document.getElementById('samples-container');
+    for(const[task,ts]of Object.entries(samples)){
+        if(!ts||!ts.length)continue;
+        const det=document.createElement('details');
+        const sum=document.createElement('summary');
+        sum.textContent=`${taskEmoji[task]||''} ${task} (${ts.length} samples)`;
+        det.appendChild(sum);
+        const grid=document.createElement('div');grid.className='sample-grid';
+        ts.forEach(s=>{
+            const card=document.createElement('div');card.className='sample-card';
+            let h='';
+            if(s.image_b64)h+=`<img src="data:image/jpeg;base64,${s.image_b64}">`;
+            h+=`<div class="img-id">Image ${s.image_id}</div>`;
+            if(s.input&&!s.input.startsWith('<'))h+=`<div class="lbl">Input</div><div class="inp">${esc(s.input)}</div>`;
+            h+=`<div class="lbl">Ground Truth</div><div class="gt">${esc(s.ground_truth)}</div>`;
+            h+=`<div class="lbl">Prediction</div><div class="pred">${esc(s.prediction)}</div>`;
+            card.innerHTML=h;grid.appendChild(card);
+        });
+        det.appendChild(grid);container.appendChild(det);
+    }
+}).catch(()=>{});
+</script>
+</body>
+</html>
