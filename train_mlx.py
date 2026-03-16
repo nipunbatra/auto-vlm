@@ -86,8 +86,8 @@ class TransformerBlock(nn.Module):
     def __init__(self, dim: int, num_heads: int, mlp_ratio: float = 4.0,
                  dropout: float = 0.1, causal: bool = False):
         super().__init__()
-        self.norm1 = nn.LayerNorm(dim)
-        self.norm2 = nn.LayerNorm(dim)
+        self.norm1 = nn.RMSNorm(dim)
+        self.norm2 = nn.RMSNorm(dim)
 
         self.num_heads = num_heads
         self.head_dim = dim // num_heads
@@ -145,7 +145,7 @@ class VisionEncoder(nn.Module):
                            dropout=config.dropout, causal=False)
             for _ in range(config.vision_depth)
         ]
-        self.norm = nn.LayerNorm(config.vision_dim)
+        self.norm = nn.RMSNorm(config.vision_dim)
 
     def __call__(self, images):
         x = self.patch_embed(images)  # (B, num_patches, vision_dim)
@@ -179,7 +179,7 @@ class LanguageDecoder(nn.Module):
                            dropout=config.dropout, causal=True)
             for _ in range(config.lang_depth)
         ]
-        self.norm = nn.LayerNorm(config.lang_dim)
+        self.norm = nn.RMSNorm(config.lang_dim)
         self.head = nn.Linear(config.lang_dim, config.vocab_size)
 
     def __call__(self, x, offset=0):
