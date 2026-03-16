@@ -22,3 +22,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 019	3.2788	9.8	discard	3600	21.7	upsampled OD/Seg 5x (OD 3.74→3.63, Seg 5.07→4.91, but overall slightly worse)
 020	3.1672	9.8	keep	3600	24.4	lr=5e-4 + upsampled (all tasks improved)
 021	3.1603	9.8	keep	3600	24.6	grad_clip=0.5
+022	3.1170	9.8	keep	3600	25.6	SwiGLU activation (LLaMA-style)

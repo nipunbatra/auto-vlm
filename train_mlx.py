@@ -98,12 +98,10 @@ class TransformerBlock(nn.Module):
         self.v_proj = nn.Linear(dim, dim)
         self.out_proj = nn.Linear(dim, dim)
 
-        mlp_dim = int(dim * mlp_ratio)
-        self.mlp = nn.Sequential(
-            nn.Linear(dim, mlp_dim),
-            nn.GELU(),
-            nn.Linear(mlp_dim, dim),
-        )
+        mlp_dim = int(dim * mlp_ratio * 2 / 3)  # SwiGLU uses 2/3 factor
+        self.w1 = nn.Linear(dim, mlp_dim)
+        self.w2 = nn.Linear(mlp_dim, dim)
+        self.w3 = nn.Linear(dim, mlp_dim)  # gate
         self.dropout = nn.Dropout(dropout)
 
     def attention(self, x, mask=None):
@@ -126,9 +124,12 @@ class TransformerBlock(nn.Module):
         out = (attn @ v).transpose(0, 2, 1, 3).reshape(B, T, C)
         return self.out_proj(out)
 
+    def swiglu(self, x):
+        return self.w2(nn.silu(self.w1(x)) * self.w3(x))
+
     def __call__(self, x, mask=None):
         x = x + self.dropout(self.attention(self.norm1(x), mask))
-        x = x + self.dropout(self.mlp(self.norm2(x)))
+        x = x + self.dropout(self.swiglu(self.norm2(x)))
         return x
 
 
