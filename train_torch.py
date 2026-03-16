@@ -43,13 +43,13 @@ class Config:
     max_seq_len: int = 512  # 196 patches + text
 
     # Training
-    batch_size: int = 4
+    batch_size: int = 2
     learning_rate: float = 5e-4
     weight_decay: float = 0.1
     warmup_steps: int = 100
     dropout: float = 0.1
     grad_clip: float = 1.0
-    time_budget: int = 600  # seconds
+    time_budget: int = 1800  # seconds
 
     # Data
     vocab_size: int = 0  # Set from tokenizer

@@ -1,2 +1,4 @@
 run	val_loss	params_M	status	time_s	improv_%	description
 001	3.5000	7.5	keep	600	0.0	baseline: pretrained DeiT-Tiny frozen, bs=4, lr=5e-4
+002	3.6189	7.5	discard	600	-3.4	lr=1e-3 (too high)
+003	3.1334	7.5	keep	1800	10.5	bs=2 + 30min (VQA=2.26!)
