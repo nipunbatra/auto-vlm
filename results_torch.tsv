@@ -8,3 +8,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 007	2.9829	9.1	discard	3600	14.8	lang_depth=8 (slower, fewer steps)
 008	3.0476	13.0	discard	3600	12.9	unfrozen vision (slower, no benefit)
 009	3.0546	7.5	discard	7200	12.7	2hr training (overfitting after 5 epochs)
+010	2.7998	7.5	keep	3600	20.0	cosine lr + dropout=0.2 (anti-overfit)

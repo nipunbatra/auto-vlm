@@ -47,7 +47,7 @@ class Config:
     learning_rate: float = 3e-4
     weight_decay: float = 0.1
     warmup_steps: int = 100
-    dropout: float = 0.1
+    dropout: float = 0.2
     grad_clip: float = 1.0
     time_budget: int = 3600  # seconds
 
@@ -368,10 +368,16 @@ def train():
             weight_decay=CONFIG.weight_decay,
         )
 
+    # Cosine LR scheduler
+    total_steps_est = int(len(train_ds) / CONFIG.batch_size * 3)  # ~3 epochs estimate
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer, T_max=total_steps_est, eta_min=CONFIG.learning_rate * 0.1
+    )
+
     # Training loop
     print(f"\nTraining for {CONFIG.time_budget}s...")
     print(f"  Config: bs={CONFIG.batch_size}, lr={CONFIG.learning_rate}, "
-          f"wd={CONFIG.weight_decay}")
+          f"wd={CONFIG.weight_decay}, cosine_lr=True")
     print()
 
     start_time = time.time()
@@ -401,6 +407,7 @@ def train():
                 CONFIG.grad_clip,
             )
             optimizer.step()
+            scheduler.step()
 
             train_losses.append(loss.item())
             step += 1
