@@ -80,6 +80,106 @@ def format_prediction(ids, tokenizer):
     return re.sub(r'\s+', ' ', text).strip()
 
 
+def parse_boxes(ids, tokenizer):
+    """Parse predicted token IDs into list of (class_name, [x1,y1,x2,y2]) tuples."""
+    tokens = [tokenizer.id_to_token.get(i, "") for i in ids]
+    objects = []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        # Skip special tokens
+        if tok in ("<sep>", "<eos>", "<od>", "<pad>", ""):
+            i += 1; continue
+        # Check if this is a class name followed by <box>
+        if not tok.startswith("<loc") and not tok.startswith("<"):
+            class_name = tok
+            i += 1
+            # Look for <box> then 4 loc tokens then </box>
+            if i < len(tokens) and tokens[i] == "<box>":
+                i += 1
+                coords = []
+                while i < len(tokens) and tokens[i] != "</box>" and len(coords) < 4:
+                    m = re.match(r'<loc(\d{3})>', tokens[i])
+                    if m:
+                        coords.append(int(m.group(1)) / 999.0 * 224)
+                    i += 1
+                if tokens[i:i+1] == ["</box>"]:
+                    i += 1
+                if len(coords) == 4:
+                    objects.append((class_name, coords))
+            continue
+        i += 1
+    return objects
+
+
+def parse_polygons(ids, tokenizer):
+    """Parse predicted token IDs into list of (class_name, [(x,y),...]) tuples."""
+    tokens = [tokenizer.id_to_token.get(i, "") for i in ids]
+    objects = []
+    i = 0
+    while i < len(tokens):
+        tok = tokens[i]
+        if tok in ("<sep>", "<eos>", "<seg>", "<pad>", ""):
+            i += 1; continue
+        if not tok.startswith("<loc") and not tok.startswith("<"):
+            class_name = tok
+            i += 1
+            if i < len(tokens) and tokens[i] == "<poly>":
+                i += 1
+                coords = []
+                while i < len(tokens) and tokens[i] != "</poly>":
+                    m = re.match(r'<loc(\d{3})>', tokens[i])
+                    if m:
+                        coords.append(int(m.group(1)) / 999.0 * 224)
+                    i += 1
+                if tokens[i:i+1] == ["</poly>"]:
+                    i += 1
+                points = [(coords[j], coords[j+1]) for j in range(0, len(coords)-1, 2)]
+                if len(points) >= 3:
+                    objects.append((class_name, points))
+            continue
+        i += 1
+    return objects
+
+
+COLORS = [(255,100,100),(100,255,100),(100,100,255),(255,255,100),(255,100,255),(100,255,255),(200,150,50),(50,200,150)]
+
+def render_boxes_on_image(img_arr, objects, title=""):
+    """Draw bounding boxes on image, return base64."""
+    from PIL import ImageDraw, ImageFont
+    img = Image.fromarray((img_arr * 255).astype(np.uint8)).copy()
+    draw = ImageDraw.Draw(img)
+    for idx, (cls, box) in enumerate(objects):
+        color = COLORS[idx % len(COLORS)]
+        x1, y1, x2, y2 = box
+        draw.rectangle([x1, y1, x2, y2], outline=color, width=2)
+        draw.text((x1+2, max(0, y1-12)), cls, fill=color)
+    if title:
+        draw.text((2, 2), title, fill=(255,255,255))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=85)
+    return base64.b64encode(buf.getvalue()).decode("ascii")
+
+
+def render_polygons_on_image(img_arr, objects, title=""):
+    """Draw polygons on image, return base64."""
+    from PIL import ImageDraw
+    img = Image.fromarray((img_arr * 255).astype(np.uint8)).copy()
+    draw = ImageDraw.Draw(img, 'RGBA')
+    for idx, (cls, points) in enumerate(objects):
+        color = COLORS[idx % len(COLORS)]
+        if len(points) >= 3:
+            flat = [(int(x), int(y)) for x, y in points]
+            draw.polygon(flat, outline=color, fill=(*color, 50))
+            draw.text((int(points[0][0]), int(points[0][1])-12), cls, fill=color)
+    if title:
+        draw = ImageDraw.Draw(img)
+        draw.text((2, 2), title, fill=(255,255,255))
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=85)
+    return base64.b64encode(buf.getvalue()).decode("ascii")
+
+
 def generate_samples(num_per_task=3, run_num=None):
     print("Loading model...")
     model, config = load_model()
@@ -122,11 +222,29 @@ def generate_samples(num_per_task=3, run_num=None):
             except Exception as e:
                 pred_text = f"(error: {e})"
             inp_text = format_prediction(ex["input_ids"], tokenizer) if task == "vqa" else f"<{task}>"
-            task_samples.append({
+            sample = {
                 "image_id": img_id, "task": task, "input": inp_text,
                 "ground_truth": gt_text, "prediction": pred_text,
                 "image_b64": image_to_base64(image),
-            })
+            }
+
+            # Render visualizations for spatial tasks
+            if task == "od":
+                gt_boxes = parse_boxes(ex["target_ids"], tokenizer)
+                pred_boxes = parse_boxes(pred_ids, tokenizer)
+                if gt_boxes:
+                    sample["gt_viz_b64"] = render_boxes_on_image(image, gt_boxes, "Ground Truth")
+                if pred_boxes:
+                    sample["pred_viz_b64"] = render_boxes_on_image(image, pred_boxes, "Prediction")
+            elif task == "seg":
+                gt_polys = parse_polygons(ex["target_ids"], tokenizer)
+                pred_polys = parse_polygons(pred_ids, tokenizer)
+                if gt_polys:
+                    sample["gt_viz_b64"] = render_polygons_on_image(image, gt_polys, "Ground Truth")
+                if pred_polys:
+                    sample["pred_viz_b64"] = render_polygons_on_image(image, pred_polys, "Prediction")
+
+            task_samples.append(sample)
             print(f"    img={img_id}: pred='{pred_text[:60]}...'")
         samples[task] = task_samples
 

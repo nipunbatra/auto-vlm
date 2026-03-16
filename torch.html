@@ -191,11 +191,21 @@ fetch('samples_torch.json').then(r=>r.json()).then(data=>{
         ts.forEach(s=>{
             const card=document.createElement('div');card.className='sample-card';
             let h='';
-            if(s.image_b64)h+=`<img src="data:image/jpeg;base64,${s.image_b64}">`;
+            if(s.image_b64)h+=`<img src="data:image/jpeg;base64,${s.image_b64}" style="border:1px solid var(--border)">`;
             h+=`<div class="img-id">Image ${s.image_id}</div>`;
-            if(s.input&&!s.input.startsWith('<'))h+=`<div class="lbl">Input</div><div class="inp">${esc(s.input)}</div>`;
+            // VQA: show question prominently
+            if(task==='vqa'&&s.input) h+=`<div class="lbl">Question</div><div class="inp" style="font-size:1rem;font-weight:600">${esc(s.input.replace('<vqa>','').replace('<sep>',''))}</div>`;
+            else if(s.input&&!s.input.startsWith('<')) h+=`<div class="lbl">Input</div><div class="inp">${esc(s.input)}</div>`;
+            // GT + Pred text
             h+=`<div class="lbl">Ground Truth</div><div class="gt">${esc(s.ground_truth)}</div>`;
             h+=`<div class="lbl">Prediction</div><div class="pred">${esc(s.prediction)}</div>`;
+            // Rendered viz for OD/Seg
+            if(s.gt_viz_b64||s.pred_viz_b64){
+                h+=`<div style="display:flex;gap:0.5rem;margin-top:0.5rem;flex-wrap:wrap">`;
+                if(s.gt_viz_b64) h+=`<div><div class="lbl">GT Boxes/Polys</div><img src="data:image/jpeg;base64,${s.gt_viz_b64}" style="max-width:200px;border-radius:4px;border:1px solid var(--green)"></div>`;
+                if(s.pred_viz_b64) h+=`<div><div class="lbl">Pred Boxes/Polys</div><img src="data:image/jpeg;base64,${s.pred_viz_b64}" style="max-width:200px;border-radius:4px;border:1px solid var(--purple)"></div>`;
+                h+=`</div>`;
+            }
             card.innerHTML=h;grid.appendChild(card);
         });
         det.appendChild(grid);container.appendChild(det);
