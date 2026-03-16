@@ -4,3 +4,5 @@ run	val_loss	params_M	status	time_s	improv_%	description
 003	3.1334	7.5	keep	1800	10.5	bs=2 + 30min (VQA=2.26!)
 004	3.1081	7.5	keep	3600	11.2	bs=2 + 60min (OD=3.30, Seg=4.73)
 005	2.8903	7.5	keep	3600	17.4	lr=3e-4 (VQA=2.09!)
+006	2.9947	7.5	discard	3600	14.4	lr=1e-4 (too slow)
+007	2.9829	9.1	discard	3600	14.8	lang_depth=8 (slower, fewer steps)

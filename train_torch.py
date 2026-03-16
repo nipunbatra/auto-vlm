@@ -34,7 +34,7 @@ class Config:
     patch_size: int = 16  # DeiT-Tiny uses patch_size=16
     vision_dim: int = 192  # DeiT-Tiny embed_dim
     vision_model: str = "vit_tiny_patch16_224"
-    freeze_vision: bool = True
+    freeze_vision: bool = False
 
     # Language decoder
     lang_dim: int = 256
