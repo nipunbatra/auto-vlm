@@ -458,7 +458,22 @@ def train():
     val_examples = load_data("val")
     images = load_images()
 
-    print(f"  Train examples: {len(train_examples)}")
+    # Upsample underrepresented tasks (OD, Seg, Describe) so model learns them
+    from collections import Counter
+    task_counts = Counter(ex["task"] for ex in train_examples)
+    max_count = max(task_counts.values())
+    upsampled = list(train_examples)
+    for task, count in task_counts.items():
+        if count < max_count:
+            task_exs = [ex for ex in train_examples if ex["task"] == task]
+            repeat = max(1, round(max_count / count)) - 1
+            upsampled.extend(task_exs * repeat)
+    train_examples = upsampled
+
+    print(f"  Train examples: {len(train_examples)} (after upsampling)")
+    task_counts_new = Counter(ex["task"] for ex in train_examples)
+    for t, c in sorted(task_counts_new.items()):
+        print(f"    {t}: {c}")
     print(f"  Val examples: {len(val_examples)}")
     print(f"  Images loaded: {len(images)}")
     print(f"  Vocab size: {CONFIG.vocab_size}")
