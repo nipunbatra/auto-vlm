@@ -44,7 +44,7 @@ class Config:
 
     # Training
     batch_size: int = 2
-    learning_rate: float = 5e-4
+    learning_rate: float = 3e-4
     weight_decay: float = 0.1
     warmup_steps: int = 100
     dropout: float = 0.1
