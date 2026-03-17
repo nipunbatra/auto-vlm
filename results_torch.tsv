@@ -26,3 +26,5 @@ run	val_loss	params_M	status	time_s	improv_%	description
 025	3.2075	11.3	discard	3600	8.4	60min 6epochs (overfitting after epoch 3)
 026	3.2636	18.2	discard	1200	6.8	dropout=0.3 wd=0.2 (too much regularization)
 027	3.1713	18.2	discard	1200	9.4	lr=3e-4 bs=32 (wrong dim, still 512)
+028	3.1532	11.3	discard	1200	10.0	H100 clean config dim=384 d=4 bs=32 lr=5e-4 20min
+029	3.1281	11.3	keep	1200	10.6	lr=3e-4 (od=3.09 best!)
