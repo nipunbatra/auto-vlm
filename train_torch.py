@@ -37,9 +37,9 @@ class Config:
     freeze_vision: bool = True
 
     # Language decoder
-    lang_dim: int = 256
-    lang_depth: int = 6
-    lang_heads: int = 4
+    lang_dim: int = 384
+    lang_depth: int = 4
+    lang_heads: int = 6
     max_seq_len: int = 512  # 196 patches + text
 
     # Training
@@ -89,7 +89,7 @@ class VisionProjector(nn.Module):
     def __init__(self, vision_dim: int, lang_dim: int):
         super().__init__()
         self.proj = nn.Linear(vision_dim, lang_dim)
-        self.norm = nn.RMSNorm(lang_dim)
+        self.norm = RMSNorm(lang_dim)
 
     def forward(self, x):
         return self.norm(self.proj(x))
@@ -283,6 +283,7 @@ def compute_loss(logits, target_ids, num_patches, input_len):
         pred_logits.reshape(-1, pred_logits.shape[-1]),
         target_ids.reshape(-1),
         reduction="none",
+        label_smoothing=0.0,
     ).reshape_as(target_ids)
 
     masked_loss = loss * mask

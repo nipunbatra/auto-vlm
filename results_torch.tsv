@@ -11,3 +11,6 @@ run	val_loss	params_M	status	time_s	improv_%	description
 010	2.7998	7.5	keep	3600	20.0	cosine lr + dropout=0.2 (anti-overfit)
 011	2.8984	7.5	discard	3600	17.2	wd=0.01 (seg=4.57 best but overall worse)
 012	2.9858	7.5	discard	3600	14.7	wd=0.05
+013	3.7491	7.6	discard	3600	-7.1	label smoothing=0.1 + MLP proj (too aggressive)
+014	2.8941	7.6	discard	3600	17.3	MLP projector (no benefit over linear)
+015	2.7908	11.2	keep	3600	20.3	wider decoder dim=384 depth=4 (11.2M trainable)
