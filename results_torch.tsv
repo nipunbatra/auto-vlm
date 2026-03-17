@@ -19,3 +19,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 018	3.2348	11.3	discard	600	7.6	H100 bs=128 lr=3e-4 compiled
 019	3.2859	11.3	discard	600	6.1	H100 bs=16 lr=3e-4 (too few steps)
 020	3.1249	11.3	keep	1200	10.7	H100 bs=32 lr=5e-4 20min +20K data
+021	3.1721	14.8	discard	1200	9.4	depth=6 (slower, fewer steps)

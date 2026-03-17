@@ -43,7 +43,7 @@ class Config:
     max_seq_len: int = 512
 
     # Training
-    batch_size: int = 32
+    batch_size: int = 64
     learning_rate: float = 5e-4
     weight_decay: float = 0.1
     warmup_steps: int = 100
