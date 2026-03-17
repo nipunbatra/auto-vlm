@@ -54,7 +54,7 @@ class Config:
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0
-    time_budget: int = 1200  # 20 min
+    time_budget: int = 3600  # 60 min
 
     # Computed
     num_patches: int = 0
@@ -114,7 +114,8 @@ class VLMWithLoRA(nn.Module):
         # Resize embeddings for new special tokens
         self.lm.resize_token_embeddings(len(tokenizer))
 
-        # Apply LoRA
+        # Apply LoRA — critically, also fully train embed_tokens + lm_head
+        # so the model can learn the new <loc000>-<loc999> coordinate tokens
         lora_config = LoraConfig(
             task_type=TaskType.CAUSAL_LM,
             r=config.lora_rank,
@@ -122,6 +123,7 @@ class VLMWithLoRA(nn.Module):
             lora_dropout=config.lora_dropout,
             target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
                           "gate_proj", "up_proj", "down_proj"],
+            modules_to_save=["embed_tokens", "lm_head"],
         )
         self.lm = get_peft_model(self.lm, lora_config)
 
