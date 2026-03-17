@@ -29,3 +29,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 028	3.1532	11.3	discard	1200	10.0	H100 clean config dim=384 d=4 bs=32 lr=5e-4 20min
 029	3.1281	11.3	keep	1200	10.6	lr=3e-4 (od=3.09 best!)
 L01	3.3428	9.9	keep	1200	4.5	LoRA: DeiT-Small+Qwen2.5-0.5B r=16 (1 epoch, describe=3.02!)
+L02	3.2300	9.9	keep	3600	7.7	LoRA 60min 3 epochs (17.9K steps)
