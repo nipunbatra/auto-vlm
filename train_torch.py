@@ -29,18 +29,18 @@ DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
 
 @dataclass
 class Config:
-    # Vision encoder (pretrained DeiT-Tiny)
+    # Vision encoder (pretrained DeiT-Small — dim=384 matches decoder)
     image_size: int = 224
-    patch_size: int = 16  # DeiT-Tiny uses patch_size=16
-    vision_dim: int = 192  # DeiT-Tiny embed_dim
-    vision_model: str = "vit_tiny_patch16_224"
+    patch_size: int = 16
+    vision_dim: int = 384  # DeiT-Small embed_dim
+    vision_model: str = "vit_small_patch16_224"
     freeze_vision: bool = True
 
     # Language decoder
     lang_dim: int = 384
     lang_depth: int = 4
     lang_heads: int = 6
-    max_seq_len: int = 512  # 196 patches + text
+    max_seq_len: int = 512
 
     # Training
     batch_size: int = 2
@@ -49,7 +49,7 @@ class Config:
     warmup_steps: int = 100
     dropout: float = 0.2
     grad_clip: float = 1.0
-    time_budget: int = 3600  # seconds
+    time_budget: int = 7200  # 2 hours
 
     # Data
     vocab_size: int = 0  # Set from tokenizer

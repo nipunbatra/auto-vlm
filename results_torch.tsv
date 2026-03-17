@@ -14,3 +14,4 @@ run	val_loss	params_M	status	time_s	improv_%	description
 013	3.7491	7.6	discard	3600	-7.1	label smoothing=0.1 + MLP proj (too aggressive)
 014	2.8941	7.6	discard	3600	17.3	MLP projector (no benefit over linear)
 015	2.7908	11.2	keep	3600	20.3	wider decoder dim=384 depth=4 (11.2M trainable)
+016	2.8548	11.3	keep	7200	18.4	DeiT-Small (22M frozen) + 2hr
