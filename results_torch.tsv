@@ -23,3 +23,6 @@ run	val_loss	params_M	status	time_s	improv_%	description
 022	3.1816	11.3	discard	1200	9.1	bs=64 (too big)
 023	3.1222	11.3	keep	1800	10.8	bs=32 30min (3 epochs, marginal gain)
 024	3.1965	18.2	discard	1200	8.7	dim=512 (bigger but worse, needs more training)
+025	3.2075	11.3	discard	3600	8.4	60min 6epochs (overfitting after epoch 3)
+026	3.2636	18.2	discard	1200	6.8	dropout=0.3 wd=0.2 (too much regularization)
+027	3.1713	18.2	discard	1200	9.4	lr=3e-4 bs=32 (wrong dim, still 512)
