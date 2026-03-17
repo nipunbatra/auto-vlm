@@ -346,7 +346,7 @@ def train():
     step = 0
     epoch = 0
     losses = []
-    scaler = torch.amp.GradScaler("cuda")
+    # bf16 doesn't need GradScaler (only fp16 does)
 
     model.train()
     while True:
@@ -363,13 +363,11 @@ def train():
                 loss = compute_loss(logits, tgt, CONFIG.num_patches, inp.shape[1])
 
             optimizer.zero_grad()
-            scaler.scale(loss).backward()
-            scaler.unscale_(optimizer)
+            loss.backward()
             torch.nn.utils.clip_grad_norm_(
                 [p for p in model.parameters() if p.requires_grad], CONFIG.grad_clip
             )
-            scaler.step(optimizer)
-            scaler.update()
+            optimizer.step()
             scheduler.step()
 
             losses.append(loss.item())
