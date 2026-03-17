@@ -33,3 +33,4 @@ L02	3.2300	9.9	keep	3600	7.7	LoRA 60min 3 epochs (17.9K steps)
 L03	1.8190	283.5	keep	3600	48.0	LoRA r=32 bs=8 60min: ALL TASKS MASSIVELY IMPROVED
 L04	1.8190	283.5	keep	3600	48.0	LoRA+unfrozen embeddings! OD=1.75 Seg=2.04 VQA=1.77 Cap=1.83
 L05	1.7756	283.5	keep	7200	49.3	LoRA 2hr: real OD coords and seg polygons working!
+L06	1.7937	283.5	keep	14400	48.8	4hr LoRA: bottle[399,315,419,400] dog polygon 12 vertices!
