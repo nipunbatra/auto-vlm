@@ -310,6 +310,19 @@ def train():
     val_examples = load_data("val")
     images = load_images()
 
+    # Load extra COCO train data if available
+    extra_data_path = Path("data/processed/train_extra.json")
+    extra_images_path = Path("data/processed/train_images.npz")
+    if extra_data_path.exists() and extra_images_path.exists():
+        import json as json_mod
+        with open(extra_data_path) as f:
+            extra_examples = json_mod.load(f)
+        extra_imgs = np.load(extra_images_path)
+        extra_images = {int(k): extra_imgs[k] for k in extra_imgs.files}
+        images.update(extra_images)
+        train_examples.extend(extra_examples)
+        print(f"  Loaded {len(extra_examples)} extra train examples, {len(extra_images)} extra images")
+
     # Upsample underrepresented tasks
     from collections import Counter
     task_counts = Counter(ex["task"] for ex in train_examples)
