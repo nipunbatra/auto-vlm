@@ -23,7 +23,7 @@ from torch.utils.data import Dataset, DataLoader
 
 from prepare_data import load_tokenizer, load_data, load_images, load_metadata
 
-DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # ─── Configuration ───────────────────────────────────────────────────────────
 
@@ -43,13 +43,13 @@ class Config:
     max_seq_len: int = 512
 
     # Training
-    batch_size: int = 2
-    learning_rate: float = 3e-4
+    batch_size: int = 32
+    learning_rate: float = 5e-4
     weight_decay: float = 0.1
     warmup_steps: int = 100
     dropout: float = 0.2
     grad_clip: float = 1.0
-    time_budget: int = 7200  # 2 hours
+    time_budget: int = 1200
 
     # Data
     vocab_size: int = 0  # Set from tokenizer
@@ -347,11 +347,11 @@ def train():
     val_ds = VLMDataset(val_examples, images)
     train_loader = DataLoader(
         train_ds, batch_size=CONFIG.batch_size, shuffle=True,
-        collate_fn=collate_fn, num_workers=0, drop_last=True,
+        collate_fn=collate_fn, num_workers=4, drop_last=True, pin_memory=True,
     )
     val_loader = DataLoader(
         val_ds, batch_size=CONFIG.batch_size, shuffle=True,
-        collate_fn=collate_fn, num_workers=0, drop_last=True,
+        collate_fn=collate_fn, num_workers=4, drop_last=True, pin_memory=True,
     )
 
     # Model
@@ -388,6 +388,8 @@ def train():
         optimizer, T_max=total_steps_est, eta_min=CONFIG.learning_rate * 0.1
     )
 
+    scaler = torch.amp.GradScaler("cuda")
+
     # Training loop
     print(f"\nTraining for {CONFIG.time_budget}s...")
     print(f"  Config: bs={CONFIG.batch_size}, lr={CONFIG.learning_rate}, "
@@ -411,16 +413,16 @@ def train():
             input_ids = input_ids.to(DEVICE)
             target_ids = target_ids.to(DEVICE)
 
-            logits = model(images_b, input_ids, target_ids)
-            loss = compute_loss(logits, target_ids, CONFIG.num_patches, input_ids.shape[1])
+            with torch.amp.autocast("cuda", dtype=torch.bfloat16):
+                logits = model(images_b, input_ids, target_ids)
+                loss = compute_loss(logits, target_ids, CONFIG.num_patches, input_ids.shape[1])
 
             optimizer.zero_grad()
-            loss.backward()
-            torch.nn.utils.clip_grad_norm_(
-                [p for p in model.parameters() if p.requires_grad],
-                CONFIG.grad_clip,
-            )
-            optimizer.step()
+            scaler.scale(loss).backward()
+            scaler.unscale_(optimizer)
+            torch.nn.utils.clip_grad_norm_([p for p in model.parameters() if p.requires_grad], CONFIG.grad_clip)
+            scaler.step(optimizer)
+            scaler.update()
             scheduler.step()
 
             train_losses.append(loss.item())
