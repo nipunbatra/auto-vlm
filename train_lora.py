@@ -23,6 +23,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
+import torchvision.transforms as T
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from peft import LoraConfig, get_peft_model, TaskType
 
@@ -54,7 +55,7 @@ class Config:
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0
-    time_budget: int = 14400  # 60 min
+    time_budget: int = 7200  # 60 min
 
     # Computed
     num_patches: int = 0
@@ -172,6 +173,7 @@ class VLMDatasetQwen(Dataset):
         self.images = images
         self.max_target_len = max_target_len
         self.examples = []
+        self._augment = True
 
         # Re-tokenize with Qwen tokenizer
         # We need to convert from our old token format to text, then re-tokenize
@@ -208,8 +210,12 @@ class VLMDatasetQwen(Dataset):
         ex = self.examples[idx]
         img = self.images[ex["image_id"]]
 
-        # Convert to PyTorch: (3, H, W), ImageNet normalize
+        # Convert to PyTorch: (3, H, W), augment, ImageNet normalize
         img_t = torch.tensor(img).permute(2, 0, 1)
+        # Data augmentation (training only)
+        if hasattr(self, '_augment') and self._augment:
+            img_t = T.RandomHorizontalFlip(p=0.5)(img_t)
+            img_t = T.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2)(img_t)
         mean = torch.tensor([0.485, 0.456, 0.406]).view(3, 1, 1)
         std = torch.tensor([0.229, 0.224, 0.225]).view(3, 1, 1)
         img_t = (img_t - mean) / std
