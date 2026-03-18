@@ -31,7 +31,7 @@ ANN_DIR = DATA_DIR / "annotations"
 PROCESSED_DIR = DATA_DIR / "processed"
 COCO_TRAIN_URL = "http://images.cocodataset.org/zips/train2017.zip"
 
-MAX_TRAIN_IMAGES = 20000  # Use 20K out of 118K
+MAX_TRAIN_IMAGES = 60000  # Use 20K out of 118K
 
 
 def download_coco_train():
