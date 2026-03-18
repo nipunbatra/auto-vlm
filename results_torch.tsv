@@ -41,3 +41,4 @@ L10	1.8266	310	discard	14400	47.8	r=64 4hr (overfits, 2hr was better)
 L10	1.8266190302371978	310	discard	14400	47.8	LoRA r=64 lr=1e-4 bs=8 4hr
 L11	1.8493583890795708	310	discard	7200	47.2	r=64 2hr + augmentation (flip+color)
 L12	1.6784927436709405	310	keep	7200	52.0	60K images (3x data) r=64 lr=1e-4 2hr
+L13	1.6724630352854728	310	keep	14400	52.2	60K images 4hr (test if more data prevents overfit)
