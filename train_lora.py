@@ -49,8 +49,8 @@ class Config:
     lora_dropout: float = 0.1
 
     # Training
-    batch_size: int = 8
-    learning_rate: float = 1e-4
+    batch_size: int = 16
+    learning_rate: float = 2e-4
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0
