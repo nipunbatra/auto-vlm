@@ -44,13 +44,13 @@ class Config:
     max_seq_len: int = 512
 
     # LoRA
-    lora_rank: int = 16
+    lora_rank: int = 32
     lora_alpha: int = 32
     lora_dropout: float = 0.1
 
     # Training
     batch_size: int = 8
-    learning_rate: float = 2e-4
+    learning_rate: float = 3e-4
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0

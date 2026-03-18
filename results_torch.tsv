@@ -34,3 +34,4 @@ L03	1.8190	283.5	keep	3600	48.0	LoRA r=32 bs=8 60min: ALL TASKS MASSIVELY IMPROV
 L04	1.8190	283.5	keep	3600	48.0	LoRA+unfrozen embeddings! OD=1.75 Seg=2.04 VQA=1.77 Cap=1.83
 L05	1.7756	283.5	keep	7200	49.3	LoRA 2hr: real OD coords and seg polygons working!
 L06	1.7937	283.5	keep	14400	48.8	4hr LoRA: bottle[399,315,419,400] dog polygon 12 vertices!
+L07	1.7879	292.3	keep	7200	48.9	LoRA r=32 2hr: OD=1.70 VQA=1.73 + viz overlays
