@@ -55,7 +55,7 @@ class Config:
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0
-    time_budget: int = 14400  # 60 min
+    time_budget: int = 28800  # 60 min
 
     # Computed
     num_patches: int = 0
