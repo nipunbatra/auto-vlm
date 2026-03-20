@@ -69,11 +69,13 @@ def fmt(ids, tok):
 
 # Load model
 old_tok = load_old_tok(); tokenizer = setup_tokenizer()
-vision = timm.create_model("vit_small_patch16_224", pretrained=True, num_classes=0).to(DEVICE).eval()
-projector = torch.nn.Sequential(torch.nn.Linear(384, 896), torch.nn.GELU(), torch.nn.Linear(896, 896))
+cfg = json.load(open("checkpoint_lora/config.json"))
+vision = timm.create_model(cfg["vision_model"], pretrained=True, num_classes=0).to(DEVICE).eval()
+vdim, ldim = cfg["vision_dim"], cfg["lm_dim"]
+projector = torch.nn.Sequential(torch.nn.Linear(vdim, ldim), torch.nn.GELU(), torch.nn.Linear(ldim, ldim))
 projector.load_state_dict(torch.load("checkpoint_lora/projector.pt", map_location=DEVICE))
 projector = projector.to(DEVICE).eval()
-lm = AutoModelForCausalLM.from_pretrained("Qwen/Qwen2.5-0.5B", trust_remote_code=True, dtype=torch.bfloat16)
+lm = AutoModelForCausalLM.from_pretrained(cfg["lm_model"], trust_remote_code=True, dtype=torch.bfloat16)
 lm.resize_token_embeddings(len(tokenizer))
 lm = PeftModel.from_pretrained(lm, "checkpoint_lora/lora").to(DEVICE).eval()
 
