@@ -34,28 +34,28 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 @dataclass
 class Config:
     # Vision
-    vision_model: str = "vit_small_patch16_224"
-    vision_dim: int = 384
+    vision_model: str = "vit_base_patch16_siglip_224"
+    vision_dim: int = 768
     image_size: int = 224
     patch_size: int = 16
 
     # Language
-    lm_model: str = "Qwen/Qwen2.5-0.5B"
-    lm_dim: int = 896
+    lm_model: str = "Qwen/Qwen2.5-1.5B"
+    lm_dim: int = 1536
     max_seq_len: int = 512
 
     # LoRA
-    lora_rank: int = 64
+    lora_rank: int = 32
     lora_alpha: int = 32
     lora_dropout: float = 0.1
 
     # Training
-    batch_size: int = 8
-    learning_rate: float = 1e-4
+    batch_size: int = 4
+    learning_rate: float = 2e-4
     weight_decay: float = 0.01
     warmup_steps: int = 100
     grad_clip: float = 1.0
-    time_budget: int = 28800  # 60 min
+    time_budget: int = 1200  # 60 min
 
     # Computed
     num_patches: int = 0
