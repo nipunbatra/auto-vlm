@@ -139,7 +139,9 @@ class VLMWithLoRA(nn.Module):
         # 1. Vision features (frozen)
         with torch.no_grad():
             vis_features = self.vision_encoder.forward_features(images)
-            vis_features = vis_features[:, 1:, :]  # remove CLS, (B, 196, 384)
+            # SigLIP has no CLS token (196 patches), DeiT has CLS (197 → remove first)
+            if vis_features.shape[1] > self.config.num_patches:
+                vis_features = vis_features[:, 1:, :]  # remove CLS for DeiT
 
         # 2. Project to LM dimension
         vis_tokens = self.projector(vis_features.float())  # (B, 196, 896)
